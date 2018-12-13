@@ -16,6 +16,7 @@
 		CAA4F3D821C1E9360022FC30 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CAA4F3D721C1E9360022FC30 /* background.jpg */; };
 		CAA4F3DA21C1EC8B0022FC30 /* LocationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA4F3D921C1EC8B0022FC30 /* LocationHelper.swift */; };
 		CAA4F3DC21C1EC9C0022FC30 /* BrokenPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA4F3DB21C1EC9C0022FC30 /* BrokenPromise.swift */; };
+		CAA4F3DE21C1EE5F0022FC30 /* WeatherHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA4F3DD21C1EE5F0022FC30 /* WeatherHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		CAA4F3D721C1E9360022FC30 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
 		CAA4F3D921C1EC8B0022FC30 /* LocationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHelper.swift; sourceTree = "<group>"; };
 		CAA4F3DB21C1EC9C0022FC30 /* BrokenPromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrokenPromise.swift; sourceTree = "<group>"; };
+		CAA4F3DD21C1EE5F0022FC30 /* WeatherHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 				CAA4F3D721C1E9360022FC30 /* background.jpg */,
 				CAA4F3D921C1EC8B0022FC30 /* LocationHelper.swift */,
 				CAA4F3DB21C1EC9C0022FC30 /* BrokenPromise.swift */,
+				CAA4F3DD21C1EE5F0022FC30 /* WeatherHelper.swift */,
 			);
 			path = WeatherChecker;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CAA4F3DA21C1EC8B0022FC30 /* LocationHelper.swift in Sources */,
+				CAA4F3DE21C1EE5F0022FC30 /* WeatherHelper.swift in Sources */,
 				CAA4F3C821C1DEBC0022FC30 /* ViewController.swift in Sources */,
 				CAA4F3DC21C1EC9C0022FC30 /* BrokenPromise.swift in Sources */,
 				CAA4F3C621C1DEBC0022FC30 /* AppDelegate.swift in Sources */,
