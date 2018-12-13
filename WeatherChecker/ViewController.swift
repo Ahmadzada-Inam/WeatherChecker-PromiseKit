@@ -25,5 +25,72 @@ class ViewController: UIViewController {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var conditionLabel: UILabel!
     @IBOutlet weak var randomWeatherButton: UIButton!
+    
+    let weatherApi = WeatherHelper()
+    let locationHelper = LocationHelper()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        updateWithCurrentLocation()
+    }
+    
+    private func updateWithCurrentLocation() {
+        handleMockLocation()
+    }
+    
+    private func handleMockLocation() {
+        let coordinate = CLLocationCoordinate2DMake(37.966667, 23.716667)
+        handleLocation(city: "Athens", state: "Greece", coordinate: coordinate)
+    }
+    
+    private func handleLocation(placemark: CLPlacemark) {
+        handleLocation(city: placemark.locality, state: placemark.administrativeArea, coordinate: placemark.location!.coordinate)
+    }
+    
+    private func handleLocation(city: String?, state: String?, coordinate: CLLocationCoordinate2D) {
+        if let city = city, let state = state {
+            placeLabel.text = "\(city), \(state)"
+        }
+        
+        weatherApi.getWeatherOldWay(coordinate: coordinate) { (info, error) in
+            guard let weatherInfo = info else {
+                self.tempLabel.text = "--"
+                self.conditionLabel.text = error?.localizedDescription ?? "--"
+                return
+            }
+            
+            self.updateUI(with: weatherInfo)
+        }
+    }
+    
+    private func updateUI(with weatherInfo: WeatherHelper.WeatherInfo) {
+        let tempMeasurement = Measurement(value: weatherInfo.main.temp, unit: UnitTemperature.kelvin)
+        let formatter = MeasurementFormatter()
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .none
+        formatter.numberFormatter = numberFormatter
+        
+        let tempString = formatter.string(from: tempMeasurement)
+        self.tempLabel.text = tempString
+        self.placeLabel.text = weatherInfo.name
+        self.conditionLabel.text = weatherInfo.weather.first?.description ?? "Empty"
+        self.conditionLabel.textColor = .white
+    }
+    
+    @IBAction func showRandomWeather(_ sender: UIButton) {
+        
+    }
 }
 
+extension ViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        guard let _ = textField.text else { return false }
+        
+        handleMockLocation()
+        
+        return true
+    }
+}
