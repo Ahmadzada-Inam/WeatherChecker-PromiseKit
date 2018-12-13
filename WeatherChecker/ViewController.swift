@@ -111,9 +111,12 @@ extension ViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         
-        guard let _ = textField.text else { return false }
-        
-        handleMockLocation()
+        guard let text = textField.text else { return false }
+        locationHelper.searchForPlacemark(text: text)
+        .done { placemark in
+            self.handleLocation(placemark: placemark)
+        }
+        .catch { _ in }
         
         return true
     }

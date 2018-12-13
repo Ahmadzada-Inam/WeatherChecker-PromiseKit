@@ -18,4 +18,8 @@ class LocationHelper {
             return self.coder.reverseGeocode(location: location).firstValue
         }
     }
+    
+    func searchForPlacemark(text: String) -> Promise<CLPlacemark> {
+        return coder.geocode(text).firstValue
+    }
 }
