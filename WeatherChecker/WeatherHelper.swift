@@ -29,21 +29,14 @@ class WeatherHelper {
     }
     
     func getWeather(coordinate: CLLocationCoordinate2D) -> Promise<WeatherInfo> {
-        return Promise { seal in
-            let urlString = "http://api.openweathermap.org/data/2.5/weather?lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&appid=\(appID)"
-            
-            let url = URL(string: urlString)!
-            
-            URLSession.shared.dataTask(with: url) { (data, _, error) in
-                guard let data = data, let result = try? JSONDecoder().decode(WeatherInfo.self, from: data) else {
-                    
-                    let genericError = NSError(domain: "Error", code: 0, userInfo: [NSLocalizedDescriptionKey : "Unknown error."])
-                    seal.reject(error ?? genericError)
-                    return
-                }
-                
-                seal.fulfill(result)
-            }.resume()
+        let urlString = "http://api.openweathermap.org/data/2.5/weather?lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&appid=\(appID)"
+        
+        let url = URL(string: urlString)!
+        
+        return firstly {
+            URLSession.shared.dataTask(.promise, with: url)
+        }.compactMap {
+            return try JSONDecoder().decode(WeatherInfo.self, from: $0.data)
         }
     }
     
