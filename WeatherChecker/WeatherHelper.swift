@@ -40,6 +40,30 @@ class WeatherHelper {
         }
     }
     
+    func getIcon(named iconName: String) -> Promise<UIImage> {
+        return Promise<UIImage> {
+            getFile(named: iconName, completion: $0.resolve)
+        }
+        .recover { _ in
+            self.getIconFromNetwork(named: iconName)
+        }
+    }
+    
+    private func getIconFromNetwork(named iconName: String) -> Promise<UIImage> {
+        let urlString = "http://openweathermap.org/img/w/\(iconName).png"
+        let url = URL(string: urlString)!
+        
+        return firstly {
+            URLSession.shared.dataTask(.promise, with: url)
+            }.then(on: DispatchQueue.global(qos: .background), { response in
+                return Promise {
+                    self.saveFile(named: iconName, data: response.data, completion: $0.resolve)
+                }.then(on: DispatchQueue.global(qos: .background)) {
+                    return Promise.value(UIImage(data: response.data)!)
+                }
+            })
+    }
+    
     private func saveFile(named: String, data: Data, completion: @escaping (Error?) -> Void) {
         guard let path = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first?.appendingPathComponent(named+".png") else { return }
         

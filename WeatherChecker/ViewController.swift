@@ -72,10 +72,17 @@ class ViewController: UIViewController {
         }
         
         weatherApi.getWeather(coordinate: coordinate)
-        .done { [weak self] weatherInfo in
+        .then { [weak self] weatherInfo -> Promise<UIImage> in
+            guard let self = self else { return brokenPromise() }
+            
             DispatchQueue.main.async {
-                self?.updateUI(with: weatherInfo)
+                self.updateUI(with: weatherInfo)
             }
+            
+            return self.weatherApi.getIcon(named: weatherInfo.weather.first!.icon)
+        }
+        .done(on: DispatchQueue.main) { (icon) in
+            self.iconImageView.image = icon
         }
         .catch { [weak self] error in
             DispatchQueue.main.async {
@@ -103,7 +110,34 @@ class ViewController: UIViewController {
     }
     
     @IBAction func showRandomWeather(_ sender: UIButton) {
+        randomWeatherButton.isEnabled = false
         
+        let weatherPromises = randomCities.map {
+            weatherApi.getWeather(coordinate: CLLocationCoordinate2D(latitude: $0.2, longitude: $0.3))
+        }
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
+        race(weatherPromises)
+            .then { [weak self] weatherInfo -> Promise<UIImage> in
+                guard let self = self else { return brokenPromise() }
+                
+                self.placeLabel.text = weatherInfo.name
+                self.updateUI(with: weatherInfo)
+                return self.weatherApi.getIcon(named: weatherInfo.weather.first!.icon)
+            }
+            .done { icon in
+                self.iconImageView.image = icon
+            }
+            .catch { error in
+                self.tempLabel.text = "--"
+                self.conditionLabel.text = error.localizedDescription
+                self.conditionLabel.textColor = errorColor
+            }
+            .finally {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.randomWeatherButton.isEnabled = true
+        }
     }
 }
 
