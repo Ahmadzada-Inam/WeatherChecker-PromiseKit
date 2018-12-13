@@ -53,14 +53,20 @@ class ViewController: UIViewController {
             placeLabel.text = "\(city), \(state)"
         }
         
-        weatherApi.getWeatherOldWay(coordinate: coordinate) { (info, error) in
-            guard let weatherInfo = info else {
-                self.tempLabel.text = "--"
-                self.conditionLabel.text = error?.localizedDescription ?? "--"
-                return
+        weatherApi.getWeather(coordinate: coordinate)
+        .done { [weak self] weatherInfo in
+            DispatchQueue.main.async {
+                self?.updateUI(with: weatherInfo)
             }
-            
-            self.updateUI(with: weatherInfo)
+        }
+        .catch { [weak self] error in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                
+                self.tempLabel.text = "--"
+                self.conditionLabel.text = error.localizedDescription
+                self.conditionLabel.textColor = errorColor
+            }
         }
     }
     

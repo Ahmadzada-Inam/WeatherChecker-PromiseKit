@@ -16,7 +16,7 @@ class WeatherHelper {
     struct WeatherInfo: Codable {
         let main: Temperature
         let weather: [Weather]
-        let name: String = "Error: invalid jsonDictionary! Verify your appID is correct"
+        var name: String = "Error: invalid jsonDictionary! Verify your appID is correct"
     }
     
     struct Weather: Codable {
@@ -28,22 +28,23 @@ class WeatherHelper {
         let temp: Double
     }
     
-    func getWeatherOldWay(coordinate: CLLocationCoordinate2D, completion: @escaping (WeatherInfo?, Error?) -> Void) {
-        let urlString = "http://api.openweathermap.org/data/2.5/weather?lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&appid=\(appID)"
-        
-        guard let url = URL(string: urlString) else {
-            preconditionFailure("Failed creating API URL - Make sure you set your OpenWeather API Key")
-        }
-        
-        URLSession.shared.dataTask(with: url) { (data, _, error) in
-            guard let data = data, let result = try? JSONDecoder().decode(WeatherInfo.self, from: data) else {
-                completion(nil, error)
-                return
-            }
+    func getWeather(coordinate: CLLocationCoordinate2D) -> Promise<WeatherInfo> {
+        return Promise { seal in
+            let urlString = "http://api.openweathermap.org/data/2.5/weather?lat=\(coordinate.latitude)&lon=\(coordinate.longitude)&appid=\(appID)"
             
-            completion(result, nil)
+            let url = URL(string: urlString)!
+            
+            URLSession.shared.dataTask(with: url) { (data, _, error) in
+                guard let data = data, let result = try? JSONDecoder().decode(WeatherInfo.self, from: data) else {
+                    
+                    let genericError = NSError(domain: "Error", code: 0, userInfo: [NSLocalizedDescriptionKey : "Unknown error."])
+                    seal.reject(error ?? genericError)
+                    return
+                }
+                
+                seal.fulfill(result)
+            }.resume()
         }
-        .resume()
     }
     
     private func saveFile(named: String, data: Data, completion: @escaping (Error?) -> Void) {
