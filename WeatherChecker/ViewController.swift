@@ -36,7 +36,25 @@ class ViewController: UIViewController {
     }
     
     private func updateWithCurrentLocation() {
-        handleMockLocation()
+        locationHelper.getLocation()
+        .done { [weak self] placemark in
+            self?.handleLocation(placemark: placemark)
+        }
+        .catch { [weak self] error in
+            guard let self = self else { return }
+            
+            self.tempLabel.text = "--"
+            self.placeLabel.text = "--"
+            
+            switch error {
+            case is CLError where (error as? CLError)?.code == .denied:
+                self.conditionLabel.text = "Enable Location Permissions in Settings"
+                self.conditionLabel.textColor = UIColor.white
+            default:
+                self.conditionLabel.text = error.localizedDescription
+                self.conditionLabel.textColor = errorColor
+            }
+        }
     }
     
     private func handleMockLocation() {
