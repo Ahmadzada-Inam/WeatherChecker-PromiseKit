@@ -14,6 +14,8 @@
 		CAA4F3CD21C1DEBE0022FC30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CAA4F3CC21C1DEBE0022FC30 /* Assets.xcassets */; };
 		CAA4F3D021C1DEBE0022FC30 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAA4F3CE21C1DEBE0022FC30 /* LaunchScreen.storyboard */; };
 		CAA4F3D821C1E9360022FC30 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CAA4F3D721C1E9360022FC30 /* background.jpg */; };
+		CAA4F3DA21C1EC8B0022FC30 /* LocationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA4F3D921C1EC8B0022FC30 /* LocationHelper.swift */; };
+		CAA4F3DC21C1EC9C0022FC30 /* BrokenPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA4F3DB21C1EC9C0022FC30 /* BrokenPromise.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		CAA4F3CF21C1DEBE0022FC30 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CAA4F3D121C1DEBE0022FC30 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAA4F3D721C1E9360022FC30 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
+		CAA4F3D921C1EC8B0022FC30 /* LocationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHelper.swift; sourceTree = "<group>"; };
+		CAA4F3DB21C1EC9C0022FC30 /* BrokenPromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrokenPromise.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,8 @@
 				CAA4F3CE21C1DEBE0022FC30 /* LaunchScreen.storyboard */,
 				CAA4F3D121C1DEBE0022FC30 /* Info.plist */,
 				CAA4F3D721C1E9360022FC30 /* background.jpg */,
+				CAA4F3D921C1EC8B0022FC30 /* LocationHelper.swift */,
+				CAA4F3DB21C1EC9C0022FC30 /* BrokenPromise.swift */,
 			);
 			path = WeatherChecker;
 			sourceTree = "<group>";
@@ -204,7 +210,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAA4F3DA21C1EC8B0022FC30 /* LocationHelper.swift in Sources */,
 				CAA4F3C821C1DEBC0022FC30 /* ViewController.swift in Sources */,
+				CAA4F3DC21C1EC9C0022FC30 /* BrokenPromise.swift in Sources */,
 				CAA4F3C621C1DEBC0022FC30 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
